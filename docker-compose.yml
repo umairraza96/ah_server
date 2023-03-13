@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: alsyed
+      POSTGRES_PASSWORD: alsyed123
+      POSTGRES_DB: alsyed
+    ports:
+      - 5432:5432
+volumes:
+  db_data:
