@@ -30,19 +30,18 @@ model User {
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   name        String
   description String
   price       Float
   image       String?
   type        String
   tags        String[]
-  category_id String
-  category    Category @relation(fields: [category_id], references: [id])
-  Order       Order?   @relation(fields: [order_id], references: [id])
-  order_id    String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt()
+  category_id String?
+  category    Category?   @relation(fields: [category_id], references: [id])
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt()
+  OrderItem   OrderItem[]
 }
 
 model Category {
@@ -56,11 +55,22 @@ model Category {
 }
 
 model Order {
-  id         String    @id @default(uuid())
-  user_id    String
-  user       User      @relation(fields: [user_id], references: [id])
+  id          String      @id @default(uuid())
+  user_id     String
+  user        User        @relation(fields: [user_id], references: [id])
+  order_items OrderItem[]
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  order_id   String
+  order      Order    @relation(fields: [order_id], references: [id])
+  product_id String
+  product    Product  @relation(fields: [product_id], references: [id])
   quantity   Int
-  products   Product[]
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
+  price      Float
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }

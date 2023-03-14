@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { getOrder } from 'src/helpers/queries';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateOrderDTO } from './dto/create-order.dto';
 
 @Injectable()
 export class OrdersService {
@@ -9,7 +11,9 @@ export class OrdersService {
     const isAdmin = user.is_admin;
 
     if (isAdmin) {
-      const orders = await this.prisma.order.findMany();
+      const orders = await this.prisma.order.findMany({
+        include: getOrder,
+      });
       return orders;
     }
 
@@ -19,5 +23,23 @@ export class OrdersService {
       },
     });
     return orders;
+  }
+
+  async create(user: JWTPayload, createOrderDTO: CreateOrderDTO) {
+    const order = await this.prisma.order.create({
+      data: {
+        user_id: user.id,
+        order_items: {
+          create: createOrderDTO.order_items.map((item) => ({
+            product_id: item.product_id,
+            quantity: item.quantity,
+            price: item.price,
+          })),
+        },
+      },
+
+      include: getOrder,
+    });
+    return order;
   }
 }
