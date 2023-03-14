@@ -34,5 +34,10 @@ export const sendResponse = <T>({
       message,
       error,
     };
+  } else {
+    return {
+      statusCode: status_code,
+      message,
+    };
   }
 };

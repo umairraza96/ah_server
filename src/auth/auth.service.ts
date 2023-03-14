@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from 'src/common/constants';
 import { HashService } from 'src/hash/hash.service';
 import { message } from 'src/helpers/response.message';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/users/users.service';
 import { LoginAuthDTO } from './dto/login.dto';
 import { SignUpAuthDTO } from './dto/signup.dto';
 

@@ -40,8 +40,8 @@ export class UserService {
   }
 
   /**
-   *
-   * @param email  email of user
+   * Find user by email
+   * @param email  email of the user
    * @returns user
    */
   async findByEmail(email: string) {
@@ -54,7 +54,8 @@ export class UserService {
 
       return user;
     } catch (error) {
-      throw new InternalServerErrorException();
+      console.log(error);
+      throw new Error(error);
     }
   }
 

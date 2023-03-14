@@ -30,7 +30,7 @@ export class AuthController {
     });
   }
 
-  @Post('/login')
+  @Post('/signin')
   @HttpCode(HttpStatus.FOUND)
   async login(@Body() loginAuthDTO: LoginAuthDTO) {
     const data = await this.authService.login(loginAuthDTO);
@@ -38,6 +38,16 @@ export class AuthController {
       status_code: HttpStatus.FOUND,
       data,
       message: message.AUTH_LOGIN_SUCCESS,
+    });
+  }
+
+  @Post('/signout')
+  @Auth()
+  async logout(@GetCurrentUser() user: JWTPayload) {
+    return sendResponse({
+      status_code: HttpStatus.OK,
+      data: 'Logout success',
+      message: message.AUTH_LOGOUT_SUCCESS,
     });
   }
 
