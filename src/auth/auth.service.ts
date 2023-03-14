@@ -31,7 +31,7 @@ export class AuthService {
     const user = await this.userService.create(signUpAuthDTO);
 
     const accessToken = await this.jwtService.signAsync(
-      { id: user.id },
+      { id: user.id, is_admin: user.is_admin },
       {
         secret: jwtConstants.secret,
       },
@@ -56,7 +56,7 @@ export class AuthService {
       throw new ForbiddenException(message.AUTH_INVALID_CREDENTIALS);
 
     const accessToken = await this.jwtService.signAsync(
-      { id: user.id },
+      { id: user.id, is_admin: user.is_admin }, // payload
       {
         secret: jwtConstants.secret,
       },

@@ -1,5 +1,10 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { HashService } from 'src/hash/hash.service';
+import { message } from 'src/helpers/response.message';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDTO } from './dto/update-user.dto';
@@ -31,11 +36,21 @@ export class UserService {
     }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(user: JWTPayload) {
+    const isAdmin = user.is_admin;
+
+    if (!isAdmin) throw new ForbiddenException(message.UNAUTHORIZED);
+
+    const users = await this.prisma.user.findMany({});
+    return users;
   }
 
-  findOne(id: number) {
+  /**
+   *
+   * @param id user id
+   * @returns User
+   */
+  findOne(id: string) {
     return `This action returns a #${id} user`;
   }
 
@@ -59,11 +74,28 @@ export class UserService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDTO) {
-    return `This action updates a #${id} user`;
+  /**
+   *
+   * @param id user id
+   * @param updateUserDto contains the data to update
+   * @returns User -- with updated data
+   */
+  update(user: JWTPayload, id: string, updateUserDto: UpdateUserDTO) {
+    const isAdmin = user.is_admin;
+
+    if (!isAdmin && user.id !== id)
+      throw new ForbiddenException(message.UNAUTHORIZED);
+
+    const updatedUser = this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: updateUserDto,
+    });
+    return updatedUser;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} user`;
   }
 }

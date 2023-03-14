@@ -11,16 +11,56 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  email     String  @unique
-  username  String  @unique
-  password  String
-  firstname String
-  lastname  String
-  avatar    String?
-  phone     String?
-  address   String?
-  city      String?
-  state     String?
-  country   String?
+  id         String   @id @default(uuid())
+  email      String   @unique
+  username   String   @unique
+  password   String
+  firstname  String
+  lastname   String
+  avatar     String?
+  phone      String?
+  address    String?
+  city       String?
+  state      String?
+  country    String?
+  is_admin   Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Order      Order[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  image       String?
+  type        String
+  tags        String[]
+  category_id String
+  category    Category @relation(fields: [category_id], references: [id])
+  Order       Order?   @relation(fields: [order_id], references: [id])
+  order_id    String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt()
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  image       String?
+  products    Product[]
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+}
+
+model Order {
+  id         String    @id @default(uuid())
+  user_id    String
+  user       User      @relation(fields: [user_id], references: [id])
+  quantity   Int
+  products   Product[]
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 }
