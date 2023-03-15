@@ -31,11 +31,10 @@ export class AuthController {
   }
 
   @Post('/signin')
-  @HttpCode(HttpStatus.FOUND)
   async login(@Body() loginAuthDTO: LoginAuthDTO) {
     const data = await this.authService.login(loginAuthDTO);
     return sendResponse({
-      status_code: HttpStatus.FOUND,
+      status_code: HttpStatus.CREATED,
       data,
       message: message.AUTH_LOGIN_SUCCESS,
     });
