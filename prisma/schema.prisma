@@ -60,6 +60,7 @@ model Order {
   phone_no    String?
   alt_phone   String?
   user_id     String
+  total_price Float
   user        User        @relation(fields: [user_id], references: [id])
   order_items OrderItem[]
   created_at  DateTime    @default(now())

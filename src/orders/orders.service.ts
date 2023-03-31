@@ -32,6 +32,7 @@ export class OrdersService {
         phone_no: createOrderDTO.phone_no,
         alt_phone: createOrderDTO.alt_phone,
         user_id: user.id,
+        total_price: createOrderDTO.total_price,
         order_items: {
           create: createOrderDTO.order_items.map((item) => ({
             product_id: item.product_id,

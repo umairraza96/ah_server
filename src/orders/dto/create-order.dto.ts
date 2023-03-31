@@ -36,6 +36,10 @@ export class CreateOrderDTO {
   @IsOptional()
   alt_phone: string;
 
+  @IsNumber()
+  @IsNotEmpty()
+  total_price: number;
+
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
