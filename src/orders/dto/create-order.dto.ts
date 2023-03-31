@@ -4,6 +4,7 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -23,6 +24,18 @@ export class OrderItemDTO {
 }
 
 export class CreateOrderDTO {
+  @IsString()
+  @IsOptional()
+  address: string;
+
+  @IsString()
+  @IsOptional()
+  phone_no: string;
+
+  @IsString()
+  @IsOptional()
+  alt_phone: string;
+
   @IsArray()
   @ArrayNotEmpty()
   @ValidateNested({ each: true })

@@ -28,6 +28,9 @@ export class OrdersService {
   async create(user: JWTPayload, createOrderDTO: CreateOrderDTO) {
     const order = await this.prisma.order.create({
       data: {
+        address: createOrderDTO.address,
+        phone_no: createOrderDTO.phone_no,
+        alt_phone: createOrderDTO.alt_phone,
         user_id: user.id,
         order_items: {
           create: createOrderDTO.order_items.map((item) => ({
