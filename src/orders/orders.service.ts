@@ -21,6 +21,7 @@ export class OrdersService {
       where: {
         user_id: user.id,
       },
+      include: getOrder,
     });
     return orders;
   }
